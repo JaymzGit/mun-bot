@@ -8,7 +8,7 @@ let user = message.author;
 
 //Variables needed for voting commands to work
 var voted= [];
-var delegates = 2;
+const delegates = 2;
 var yesCount = 0;
 var noCount = 0;
 var abstainCount = 0;
@@ -19,7 +19,7 @@ if (message.member.roles.some(role => role.name === 'Delegate')) {
 if (user.bot) return; 
 
 //A do while loop will make sure everyone has voted in order for the voting to end. 
-do {
+while (votednum < delegates){
 /* Checks if the delegates have voted or not. 
    Their vote will only be counted if they have not been included in the "voted" list/array. 
 */
@@ -62,13 +62,11 @@ do {
 		message.delete();
 		}
 	}
-}
-/* To ensure everyone has voted, this whole code block will loop until everyone has voted.
-*/
-    while (votednum < delegates)
-        if (votednum == delegates) {
-            await message.channel.send(yesCount + ` delegate(s) have voted **Yes**.` + `\n` + noCount + ` delegate(s) have voted **No**.` + `\n` + abstainCount + ` delegate(s) have **abstained** from voting.`)
-        }
+	} 
+/* To ensure everyone has voted, this whole code block will loop until everyone has voted. */
+    if (votednum == delegates) {
+        message.channel.send(yesCount + ` delegate(s) have voted **Yes**.` + `\n` + noCount + ` delegate(s) have voted **No**.` + `\n` + abstainCount + ` delegate(s) have **abstained** from voting.`)
+    }
 }
 }
 
