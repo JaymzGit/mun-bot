@@ -58,7 +58,7 @@ while (votednum < delegates){
 */
 	if(user != voted) {
 		//If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
- 		if(args[0].toLowerCase() == "yes"){
+ 		if(message.content.toLowerCase() == "-vote yes"){
  			message.delete();
  			voted.push(user);
 			//Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
@@ -68,7 +68,7 @@ while (votednum < delegates){
  			message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
 		}
 		//If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
- 		if(args[0].toLowerCase() == "no"){
+ 		if(message.content.toLowerCase() == "-vote no"){
  			message.delete();
  			voted.push(user);
  			//Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
@@ -78,7 +78,7 @@ while (votednum < delegates){
   			message.channel.send(`:ballot_box: ${user} has voted **No**.`);
 		}
 		//If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
- 		if(args[0].toLowerCase() == "abstain"){
+ 		if(message.content.toLowerCase() == "-vote abstain"){
  		message.delete();
  		voted.push(user);
  		//Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
