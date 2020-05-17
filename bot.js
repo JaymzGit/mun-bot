@@ -53,7 +53,7 @@ if(message.content.toLowerCase().startsWith("-help")){
   message.author.send(embed);
 }
 
-if(message.content..toLowerCase().startsWith("-poll")/*&& pollactive == false*/){
+if(message.content.toLowerCase().startsWith("-poll")/*&& pollactive == false*/){
   message.delete();
   message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
   /*pollactive == true;*/
