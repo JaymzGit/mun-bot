@@ -1,16 +1,13 @@
 {
-    "name": "mun-bot",
-    "version": "1.0.0",
-    "description": "PMUN  Discord Bot",
-    "main": "bot.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node ."
-    },
-    "author": "Jaymz",
-    "liscense": "ISC",
-    "dependencies": {  
-        "discord.js": "11.1.0",
-        "request": "2.81.0"
-    }
+  "name": "mun-bot",
+  "description": "MUN Discord Bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "discord.js": "11.1.0",
+    "request": "2.81.0"
+  }
 }
