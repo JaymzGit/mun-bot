@@ -22,7 +22,7 @@ while (votednum < delegates){
 /* Checks if the delegates have voted or not. 
    Their vote will only be counted if they have not been included in the "voted" list/array. 
 */
-	if(user != voted) {
+	if(!voted.includes(vote)) {
 		//If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
  		if(args[0].toLowerCase() == "yes"){
  			message.delete();
