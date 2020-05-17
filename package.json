@@ -1,6 +1,6 @@
 {
     "name": "PMUN-bot",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "PMUN  Discord Bot",
     "main": "index.js",
     "scripts": {
@@ -9,6 +9,8 @@
     },
     "author": "Jaymz",
     "liscense": "ISC",
-    "dependencies": {
+    "dependencies": {  
+        "discord.js": "11.1.0",
+        "request": "2.81.0"
     }
 }
