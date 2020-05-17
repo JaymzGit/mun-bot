@@ -32,7 +32,7 @@ while (votednum < delegates){
  			yesCount++;
  			votednum++;
  			//As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
- 			message.channel.send(`:ballot_box: ${user} has voted "Yes".`);
+ 			message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
 		}
 		//If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
  		if(args[0].toLowerCase() == "no"){
@@ -42,7 +42,7 @@ while (votednum < delegates){
  			noCount++;
  			votednum++;
  			//As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-  			message.channel.send(`:ballot_box: ${user} has voted "No".`);
+  			message.channel.send(`:ballot_box: ${user} has voted **No**.`);
 		}
 		//If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
  		if(args[0].toLowerCase() == "abstain"){
@@ -52,7 +52,7 @@ while (votednum < delegates){
  		abstainCount++;
  		votednum++;
  	    //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-  		message.channel.send(`:ballot_box: ${user} has abstained from voting.`);
+  		message.channel.send(`:ballot_box: ${user} has **abstained** from voting.`);
 		}
 	}else {
 /* If the delegate has already voted, despite of which argument he inputs after "-vote`, it will NOT be counted.
