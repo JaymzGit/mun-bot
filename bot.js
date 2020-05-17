@@ -45,6 +45,7 @@ if(message.content.startsWith("-help")){
   .addField("Commands", "`-poll` : Used to create a poll\n`-vote` : Used to vote when a poll is active")
   .setFooter('MUN Bot | Made by Jaymz#7815')
   message.author.send(embed);
+  message.channel.send("You've got mail!");
 }
 
 if(message.content.startsWith("-poll")/*&& pollactive == false*/){
