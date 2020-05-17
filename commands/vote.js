@@ -1,8 +1,7 @@
 //Import all libraries or dependecies
 const Discord = require("discord.js");
 module.exports.run = async (bot, message, args) => {
-
-//For easy access
+	
 let role = message.author.role;
 let user = message.author;
 
