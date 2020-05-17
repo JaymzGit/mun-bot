@@ -16,25 +16,6 @@ if(message.author.bot) return;
 if(message.channel.type === "dm") return;
 let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
 
-//Import all libraries or dependecies
-const botconfig = require("./botconfig.json");
-const tokenfile = require("./token.json");
-const Discord = require("discord.js");
-const fs = require("fs");
-const bot = new Discord.Client({disableEveryone: true});
-bot.commands = new Discord.Collection();
-
-bot.on("ready", async () => {
-	console.log(`\n${bot.user.username} is online!`);
-	bot.user.setActivity("-help", {type: "PLAYING"});
-})
-
-bot.on("message", async message => {
-
-if(message.author.bot) return;
-if(message.channel.type === "dm") return;
-let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
-
 //For easy access
 let role = message.author.role;
 let user = message.author;
