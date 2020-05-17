@@ -57,4 +57,4 @@ if(commandfile) commandfile.run(bot,message,args);
 
 })
 
-bot.login(tokenfile.token);
+bot.login(proces.env.BOT_TOKEN);
