@@ -1,0 +1,14 @@
+{
+    "name": "PMUN-bot",
+    "version": "0.1.0",
+    "description": "PMUN  Discord Bot",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node ."
+    },
+    "author": "Jaymz",
+    "liscense": "ISC",
+    "dependencies": {
+    }
+}
