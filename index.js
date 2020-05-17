@@ -1,6 +1,5 @@
 //Import all libraries or dependecies
 const botconfig = require("./botconfig.json");
-const tokenfile = require("./token.json");
 const Discord = require("discord.js");
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
@@ -54,4 +53,4 @@ if(commandfile) commandfile.run(bot,message,args);
 
 })
 
-bot.login(tokenfile.token);
+bot.login(process.env.BOT_TOKEN);
