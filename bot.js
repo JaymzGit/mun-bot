@@ -1,10 +1,3 @@
-//Import all libraries or dependecies
-const botconfig = require("./botconfig.json");
-const Discord = require("discord.js");
-const fs = require("fs");
-const bot = new Discord.Client({disableEveryone: true});
-bot.commands = new Discord.Collection();
-
 
 //Check for any files in the commands folders (aka checking if the bot has the following commands or not)
 fs.readdir("./commands/", (err, files) => {
@@ -31,13 +24,35 @@ fs.readdir("./commands/", (err, files) => {
 
 bot.on("ready", async () => {
 	console.log(`\n${bot.user.username} is online!`);
-	bot.user.setActivity("!help", {type: "PLAYING"});
+	bot.user.setActivity("-help", {type: "PLAYING"});
 })
 
 bot.on("message", async message => {
 
 if(message.author.bot) return;
 if(message.channel.type === "dm") return;
+
+let role = message.author.role;
+let user = message.author;
+var pollactive;
+
+if(message.content.startsWith("-help")){
+  message.delete();
+  var embed = new Discord.MessageEmbed()
+  .setColor('#1C1B1B')
+  .setTitle(':ballot_box: MUN Bot Help!')
+  .setDescription("MUN Bot Command Help")
+  .addField("Commands", "`-poll` : Used to create a poll\n`-vote` : Used to vote when a poll is active")
+  .setFooter('MUN Bot | Made by Jaymz#7815')
+  message.author.send(embed);
+}
+
+if(message.content.startsWith("-poll")/*&& pollactive == false*/){
+  message.delete();
+  message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
+  /*pollactive == true;*/
+}
+
 let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
 
 if(!prefixes[message.guild.id]){
