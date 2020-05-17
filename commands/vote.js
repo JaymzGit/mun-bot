@@ -26,7 +26,7 @@ while (votednum < delegates){
 		//If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
  		if(args[0].toLowerCase() == "yes"){
  			message.delete();
- 			voted.push(user);
+ 			voted.push(message.member.displayName);
 			//Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
  			yesCount++;
  			votednum++;
@@ -37,7 +37,7 @@ while (votednum < delegates){
 		//If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
  		if(args[0].toLowerCase() == "no"){
  			message.delete();
- 			voted.push(user);
+ 			voted.push(message.member.displayName);
  			//Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
  			noCount++;
  			votednum++;
@@ -48,7 +48,7 @@ while (votednum < delegates){
 		//If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
  		if(args[0].toLowerCase() == "abstain"){
  		message.delete();
- 		voted.push(user);
+ 		voted.push(message.member.displayName);
  		//Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
  		abstainCount++;
  		votednum++;
@@ -56,7 +56,8 @@ while (votednum < delegates){
   		message.channel.send(`:ballot_box: ${user} has **abstained** from voting.`);
  		return;
 		}
-	}else {
+ 		console.log(`Voted: ` + voted);
+	}if (voted.includes(message.member.displayName)) {
 /* If the delegate has already voted, despite of which argument he inputs after "-vote`, it will NOT be counted.
 */
  		if(args[0].toLowerCase() == "yes" || args[0].toLowerCase() == "no" || args[0].toLowerCase() == "abstain"){
@@ -65,12 +66,12 @@ while (votednum < delegates){
  		return;
 		}
 	}
-	} 
-/* To ensure everyone has voted, this whole code block will loop until everyone has voted. */
+	}
     if (votednum == delegates) {
         message.channel.send(yesCount + ` delegate(s) have voted **Yes**.` + `\n` + noCount + ` delegate(s) have voted **No**.` + `\n` + abstainCount + ` delegate(s) have **abstained** from voting.`)
     }
 }
+/* To ensure everyone has voted, this whole code block will loop until everyone has voted. */
 // }
 
 module.exports.help = {
