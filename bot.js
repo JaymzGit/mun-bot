@@ -52,7 +52,7 @@ if(message.content.toLowerCase().startsWith("-help")){
   .setFooter('MUN Bot | Made by Jaymz#7815')
   message.author.send(embed);
 }
-var pollactive = true;
+var pollactive = false;
 if(message.content.toLowerCase().startsWith("-poll") && pollactive == false){
   message.delete();
   message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
