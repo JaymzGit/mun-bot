@@ -40,8 +40,10 @@ if(message.channel.type === "dm") return;
 
 let role = message.author.role;
 let user = message.author;
-var pollactive;
-
+	
+//Commands :
+/*Help Command
+For those that forgot what the command is*/
 if(message.content.toLowerCase().startsWith("-help")){
   message.channel.send(`You've got mail! ${user}`);
   var embed = new Discord.MessageEmbed()
@@ -52,12 +54,29 @@ if(message.content.toLowerCase().startsWith("-help")){
   .setFooter('MUN Bot | Made by Jaymz#7815')
   message.author.send(embed);
 }
+
+/*Vote Command*/
 var pollactive = false;
-if(message.content.toLowerCase().startsWith("-poll") && pollactive == false){
+if(message.content.toLowerCase().startsWith("-voters") && pollactive == false){
   message.delete();
+  var arr = message.content.split(" ");
+  var delegates = arr[1];
+  console.log("Number of delegates set to " + delegates + ".");
+  message.channel.send("Number of delegates set to " + delegates + ".");
+}
+
+/*Poll Command
+Poll is not rendered "active" until the poll is active.*/
+if(message.content.toLowerCase().startsWith("-poll") && pollactive == false){
+  message.delete(); 
   message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
   pollactive = true;
 }
+
+// else (message.content.toLowerCase().startsWith("-poll") && pollactive == true){
+//   message.delete();
+//   message.channel.send(`:x: ${user} There is currently an ongoing poll. Make everyone vote to end the poll!`);
+// }
 
 let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
 
