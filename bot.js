@@ -72,7 +72,43 @@ if(message.content.toLowerCase().startsWith("-poll") && pollactive == false){
   message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
   pollactive = true;
 }
-
+var yesCount = 0;
+var noCount = 0;
+var abstainCount = 0;
+if(message.content.toLowerCase().startsWith("-vote") && pollactive == true && votednum < delegates && voted.include(message.member.displayName){
+	var arrvote = message.content.split(" ");
+	if(arrvote[1].toLowerCase() == "yes"){
+		voted.push(message.member.displayName);
+		message.delete();
+		//Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
+		yesCount++;
+		votednum++;
+		//As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
+		message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
+		return;
+		}
+	//If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
+	if(arrvote[1].toLowerCase() == "no"){
+		voted.push(message.member.displayName);
+		message.delete();
+		//Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
+		noCount++;
+		votednum++;
+		//As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
+		message.channel.send(`:ballot_box: ${user} has voted **No**.`);
+		return;
+		}
+	//If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
+	if(arrvote[1].toLowerCase() == "abstain"){
+		voted.push(message.member.displayName);
+		message.delete();
+		//Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
+		abstainCount++;
+		votednum++;
+ 	    //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
+  		message.channel.send(`:ballot_box: ${user} has **abstained** from voting.`);
+ 		return;
+}
 // else (message.content.toLowerCase().startsWith("-poll") && pollactive == true){
 //   message.delete();
 //   message.channel.send(`:x: ${user} There is currently an ongoing poll. Make everyone vote to end the poll!`);
