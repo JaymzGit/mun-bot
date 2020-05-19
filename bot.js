@@ -18,7 +18,6 @@ if(message.channel.type === "dm") return;
 
 let role = message.author.role;
 let user = message.author;
-var pollactive;
 
 /*Help Command
 For those that forgot what the command is*/
@@ -34,6 +33,19 @@ if(message.content.toLowerCase().startsWith("-help")){
 }
 
 /*Voters Commands*/
+if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false && arr[1] == null){
+    message.delete();
+    message.channel.send(":warning: Please insert a valid number!")
+    return;
+    }
+}
+else if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
+  var arr = message.content.split(" ");
+  vars.delegates = arr[1];
+  message.delete();
+  console.log("Number of delegates set to " + vars.delegates + ".");
+  message.channel.send("Number of delegates set to " + vars.delegates + ".");
+  }
 if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
   var arr = message.content.split(" ");
   vars.delegates = arr[1];
@@ -44,14 +56,6 @@ if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == fal
 
 else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == true){
 	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
-}
-
-else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
-    if(arr[1].toLowerCase() == null){
-    message.delete();
-    message.channel.send(":warning: Please insert a valid number!")
-    return;
-    }
 }
 
 /*Poll Command
@@ -150,4 +154,4 @@ if(commandfile) commandfile.run(bot,message,args);
 
 })
 
-bot.login(proces.env.BOT_TOKEN);
+bot.login(process.env.BOT_TOKEN);
