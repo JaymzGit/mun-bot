@@ -3,34 +3,12 @@ const botconfig = require("./botconfig.json");
 const Discord = require("discord.js");
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
+var vars = require("./vars.json");
 bot.commands = new Discord.Collection();
 
-//Check for any files in the commands folders (aka checking if the bot has the following commands or not)
-fs.readdir("./commands/", (err, files) => {
-
-//If there's a command file that ends with .js then proceed as normal otherwise, console will say "Couldn't find commands."
-  if(err) console.log(err);
-  let jsfile = files.filter(f => f.split(".").pop() === "js");
-  if(jsfile.length <= 0){
-    console.log("Couldn't find command files.");
-    return;
-    throw err;
-  }
-
-//To get output in console 
-//>...[1:20:56 AM INFO]: [discord.js] - JS:tag.js
-  jsfile.forEach((f, i) =>{
-    var d = new Date().toLocaleTimeString();
-    let props = require(`./commands/${f}`);
-//Displays all files that are found in the commands folder
-    console.log(`>...[${d} INFO]: [discord.js] - JS:${f}`);
-    bot.commands.set(props.help.name, props);
-  });
-});
-
 bot.on("ready", async () => {
-	console.log(`\n${bot.user.username} is online!`);
-	bot.user.setActivity("-help", {type: "PLAYING"});
+  console.log(`\n${bot.user.username} is online!`);
+  bot.user.setActivity("-help", {type: "PLAYING"});
 })
 
 bot.on("message", async message => {
@@ -40,8 +18,8 @@ if(message.channel.type === "dm") return;
 
 let role = message.author.role;
 let user = message.author;
-	
-//Commands :
+var pollactive;
+
 /*Help Command
 For those that forgot what the command is*/
 if(message.content.toLowerCase().startsWith("-help")){
@@ -50,74 +28,115 @@ if(message.content.toLowerCase().startsWith("-help")){
   .setColor('#1C1B1B')
   .setTitle(':ballot_box: MUN Bot Help!')
   .setDescription("MUN Bot Command Help")
-  .addField("Commands", "`-poll` : Used to create a poll\n`-vote` : Used to vote when a poll is active")
+  .addField("Commands", "`-voters <n>` : Used to set number of voters `-poll` : Used to create a poll session\n`-vote` : Used to vote when a poll is active\n`-end` : Used to end an active poll session")
   .setFooter('MUN Bot | Made by Jaymz#7815')
   message.author.send(embed);
 }
 
-/*Vote Command*/
-var pollactive = false;
-if(message.content.toLowerCase().startsWith("-voters") && pollactive == false){
-  message.delete();
+/*Voters Commands*/
+if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
   var arr = message.content.split(" ");
-  var delegates = arr[1];
-  console.log("Number of delegates set to " + delegates + ".");
-  message.channel.send("Number of delegates set to " + delegates + ".");
+  vars.delegates = arr[1];
+  message.delete();
+  console.log("Number of delegates set to " + vars.delegates + ".");
+  message.channel.send("Number of delegates set to " + vars.delegates + ".");
+  }
+
+else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == true){
+	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
+}
+
+else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
+    if(arr[1].toLowerCase() == null){
+    message.delete();
+    message.channel.send(":warning: Please insert a valid number!")
+    return;
+    }
 }
 
 /*Poll Command
 Poll is not rendered "active" until the poll is active.*/
-if(message.content.toLowerCase().startsWith("-poll") && pollactive == false){
+if(message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates != 0){
   message.delete(); 
   message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
-  pollactive = true;
+  vars.pollactive = true;
 }
-var yesCount = 0;
-var noCount = 0;
-var abstainCount = 0;
-if(message.content.toLowerCase().startsWith("-vote") && pollactive == true && votednum < delegates && voted.include(message.member.displayName){
-	var arrvote = message.content.split(" ");
-	if(arrvote[1].toLowerCase() == "yes"){
-		voted.push(message.member.displayName);
-		message.delete();
-		//Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
-		yesCount++;
-		votednum++;
-		//As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
-		message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
-		return;
-		}
-	//If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
-	if(arrvote[1].toLowerCase() == "no"){
-		voted.push(message.member.displayName);
-		message.delete();
-		//Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
-		noCount++;
-		votednum++;
-		//As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-		message.channel.send(`:ballot_box: ${user} has voted **No**.`);
-		return;
-		}
-	//If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
-	if(arrvote[1].toLowerCase() == "abstain"){
-		voted.push(message.member.displayName);
-		message.delete();
-		//Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
-		abstainCount++;
-		votednum++;
- 	    //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-  		message.channel.send(`:ballot_box: ${user} has **abstained** from voting.`);
- 		return;
+else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates == 0){
+	message.delete(); 
+	message.channel.send(":X: Please set number of voters with `-voters n`")
 }
-// else (message.content.toLowerCase().startsWith("-poll") && pollactive == true){
-//   message.delete();
-//   message.channel.send(`:x: ${user} There is currently an ongoing poll. Make everyone vote to end the poll!`);
-// }
+
+else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == true){
+	message.delete(); 
+	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
+}
+
+var voted = vars.voted;
+if(message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)){
+  var arrvote = message.content.split(" ");
+
+  //If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
+  if(arrvote[1].toLowerCase() == "yes"){
+    voted.push(message.author);
+    message.delete();
+    //Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
+    vars.yes++;
+    vars.votednum++;
+    //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
+    message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
+    return;
+    }
+
+  //If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
+  if(arrvote[1].toLowerCase() == "no"){
+    voted.push(message.author);
+    message.delete();
+    //Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
+    vars.no++;
+    vars.votednum = vars.votednum+1 ;
+    //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
+    message.channel.send(`:ballot_box: ${user} has voted **No**.`);
+    return;
+    }
+
+  //If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
+  if(arrvote[1].toLowerCase() == "abstain"){
+    voted.push(message.author);
+    message.delete();
+    //Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
+    vars.abstain++;
+    vars.votednum++;
+      //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
+      message.channel.send(`:ballot_box: ${user} has **abstained** from voting.`);
+    return;
+}}
+
+else if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true && vars.votednum <= vars.delegates && voted.includes(message.author)){
+	message.delete();
+	message.channel.send(`:x: ${user} You have already voted once`);
+}
+
+if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true && vars.votednum == vars.delegates){
+	vars.pollactive = false;
+	message.delete();
+	message.channel.send(":ballot_box: Poll has ended!" + "\n" + "Number of delegates who voted **Yes**: " + vars.yes + "\n" + "Number of delegates who voted **No**: " + vars.no + "\n" + "Number of delegates who **abstained** from voting: " + vars.abstain);
+	vars.yes = 0;
+	vars.no = 0;	
+	vars.abstain = 0;
+	vars.delegates = 0;
+	vars.votednum = 0;
+	vars.voted = [];
+}
+
+else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == false){
+	vars.pollactive = false;
+	message.delete();
+	message.channel.send(`:x: ${user} There is no active poll currently`);
+}
 
 let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
-
 if(!prefixes[message.guild.id]){
-   	prefixes[message.guild.id] = {
+    prefixes[message.guild.id] = {
       prefixes: botconfig.prefix
     };
   }
