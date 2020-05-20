@@ -33,12 +33,16 @@ if(message.content.toLowerCase().startsWith("-help")){
 }
 
 /*Voters Commands*/
-if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false && arr[1] == null){
+if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
     message.delete();
+	var arr = message.content.split(" ");
+  	vars.delegates = arr[1];
+	if(arr[1] == null){
     message.channel.send(":warning: Please insert a valid number!")
     return;
     }
 }
+
 else if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
   var arr = message.content.split(" ");
   vars.delegates = arr[1];
