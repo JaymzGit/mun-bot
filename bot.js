@@ -59,6 +59,7 @@ if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == fal
   }
 
 else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == true){
+	message.delete();
 	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
 }
 
@@ -79,6 +80,7 @@ else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive ==
 	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
 }
 
+/*Vote command*/
 var voted = vars.voted;
 if(message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)){
   var arrvote = message.content.split(" ");
@@ -124,6 +126,7 @@ else if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive ==
 	message.channel.send(`:x: ${user} You have already voted once`);
 }
 
+/*End poll command*/
 if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true && vars.votednum == vars.delegates){
 	vars.pollactive = false;
 	message.delete();
@@ -141,6 +144,12 @@ else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == 
 	message.delete();
 	message.channel.send(`:x: ${user} There is no active poll currently`);
 }
+
+else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true && vars.votednum < vars.delegates ){
+	message.delete();
+	message.channel.send(`:x: Make sure everyone has voted before ending the poll.`);
+}
+
 
 let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
 if(!prefixes[message.guild.id]){
