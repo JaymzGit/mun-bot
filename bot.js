@@ -19,62 +19,66 @@ if(message.channel.type === "dm") return;
 let role = message.author.role;
 let user = message.author;
 
-/*Help Command
-For those that forgot what the command is*/
+/*Help Command*/
 if(message.content.toLowerCase().startsWith("-help")){
+  message.delete();
   message.channel.send(`You've got mail! ${user}`);
   var embed = new Discord.MessageEmbed()
   .setColor('#1C1B1B')
   .setTitle(':ballot_box: MUN Bot Help!')
   .setDescription("MUN Bot Command Help")
-  .addField("Commands", "`-voters <n>` : Used to set number of voters `-poll` : Used to create a poll session\n`-vote` : Used to vote when a poll is active\n`-end` : Used to end an active poll session")
+  .addField("Commands", "`-voters` : Used to set number of voters\n`-poll  ` : Used to create a poll session" + 
+    "\n`-vote  ` : Used to vote when a poll is active\n`-end   ` : Used to end an active poll session")
   .setFooter('MUN Bot | Made by Jaymz#7815')
   message.author.send(embed);
 }
 
 /*Voters Commands*/
+//Checks if there is an integer after the command.
 if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
     message.delete();
-	var arr = message.content.split(" ");
-  	vars.delegates = arr[1];
-	if(arr[1] == null){
+    var arr = message.content.split(" ");
+      vars.delegates = arr[1];
+    if(arr[1] == null){
     message.channel.send(":warning: Please insert a valid number!")
     return;
+  }
+  //Sets the number of delegates/voters accordingly if an integer is provided.
+    else if (arr[1] > 0){
+  vars.delegates = arr[1];
+  console.log("Number of delegates set to " + vars.delegates + ".");
+  message.channel.send("Number of delegates set to " + vars.delegates + "."); 
     }
 }
 
-else if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
-  var arr = message.content.split(" ");
-  vars.delegates = arr[1];
-  message.delete();
-  console.log("Number of delegates set to " + vars.delegates + ".");
-  message.channel.send("Number of delegates set to " + vars.delegates + ".");
-  }
-if(message.content.toLowerCase().startsWith("-voters") && vars.pollactive == false){
-  var arr = message.content.split(" ");
-  vars.delegates = arr[1];
-  message.delete();
-  console.log("Number of delegates set to " + vars.delegates + ".");
-  message.channel.send("Number of delegates set to " + vars.delegates + ".");
-  }
-
+//Guarantees that the number of voters cannot be changed during a poll.
 else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive == true){
 	message.delete();
 	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
 }
 
-/*Poll Command
-Poll is not rendered "active" until the poll is active.*/
-if(message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates != 0){
+/*Poll Command*/
+//Outputs a warning/error to include a statement/argument after the command.
+if (message.content.toLowerCase() == ("-poll") && vars.pollactive == false && vars.delegates != 0){
   message.delete(); 
-  message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
-  vars.pollactive = true;
-}
-else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates == 0){
-	message.delete(); 
-	message.channel.send(":X: Please set number of voters with `-voters n`")
+  message.channel.send(":warning: Please include a statement after `-poll` command");
 }
 
+//Runs a poll only if there is no poll active and there is an argument after the command.
+else if(message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates != 0){
+  message.delete(); 
+  message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` +
+   `\n` + `> ${message.content.toString().slice(6)}`);
+  vars.pollactive = true;
+}
+
+//Checks if the number of voters is already set prior to the poll command being issued.
+else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates == 0){
+	message.delete(); 
+	message.channel.send(":x: Please set number of voters with `-voters n`")
+}
+
+//Checks if a poll is currently active before starting a new poll.
 else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == true){
 	message.delete(); 
 	message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
@@ -127,10 +131,12 @@ else if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive ==
 }
 
 /*End poll command*/
+//Ends poll accordingly if the conditions are met.
 if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true && vars.votednum == vars.delegates){
 	vars.pollactive = false;
 	message.delete();
-	message.channel.send(":ballot_box: Poll has ended!" + "\n" + "Number of delegates who voted **Yes**: " + vars.yes + "\n" + "Number of delegates who voted **No**: " + vars.no + "\n" + "Number of delegates who **abstained** from voting: " + vars.abstain);
+	message.channel.send(":ballot_box: Poll has ended!" + "\n" + "Number of delegates who voted **Yes**: " + vars.yes +
+   "\n" + "Number of delegates who voted **No**: " + vars.no + "\n" + "Number of delegates who **abstained** from voting: " + vars.abstain);
 	vars.yes = 0;
 	vars.no = 0;	
 	vars.abstain = 0;
@@ -139,12 +145,14 @@ if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true 
 	vars.voted = [];
 }
 
+//Checks if a poll is active before being able to end. (Logic)
 else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == false){
 	vars.pollactive = false;
 	message.delete();
 	message.channel.send(`:x: ${user} There is no active poll currently`);
 }
 
+//Checks if everyone has voted before allowing the user to end the poll.
 else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true && vars.votednum < vars.delegates ){
 	message.delete();
 	message.channel.send(`:x: Make sure everyone has voted before ending the poll.`);
