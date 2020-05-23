@@ -59,6 +59,7 @@ else if (message.content.toLowerCase().startsWith("-voters") && vars.pollactive 
 
 /*Poll Command*/
 //Outputs a warning/error to include a statement/argument after the command.
+
 if (message.content.toLowerCase() == ("-poll") && vars.pollactive == false && vars.delegates != 0){
   message.delete(); 
   message.channel.send(":warning: Please include a statement after `-poll` command");
@@ -172,7 +173,6 @@ let cmd = messageArray[0];
 let args = messageArray.slice(1);
 let commandfile = bot.commands.get(cmd.slice(prefix.length));
 if(commandfile) commandfile.run(bot,message,args);
-
 })
 
 bot.login(process.env.BOT_TOKEN);
