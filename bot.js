@@ -116,7 +116,7 @@ bot.on("message", async message => {
   if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
     if (message.content.toLowerCase()
       .startsWith("-vote") && vars.pollactive == true &&
-      vars.votednum < vars.delegates && !voted.includes(message.author)) {
+      vars.votednum < vars.delegates && !voted.includes(message.author.id)) {
       var arrvote = message.content.split(" ");
       //If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
       if (arrvote[1].toLowerCase() == "yes") {
@@ -173,10 +173,10 @@ bot.on("message", async message => {
   }
 
   if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
-    if (vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)) {
+    if (vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author.id)) {
       //If delegate performed the command "-yes", it will move delegate's discord username into the "voted" list/array.
       if (message.content.toLowerCase() == "-yes") {
-        voted.push(message.author);
+        voted.push(message.author.id);
         message.delete();
         //Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
         vars.yes++;
@@ -187,7 +187,7 @@ bot.on("message", async message => {
       }
       //If delegate performed the command "-no", it will move delegate's discord username into the "voted" list/array.
       if (message.content.toLowerCase() == "-no") {
-        voted.push(message.author);
+        voted.push(message.author.id);
         message.delete();
         //Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
         vars.no++;
@@ -198,7 +198,7 @@ bot.on("message", async message => {
       }
       //If delegate performed the command "-abstain", it will move delegate's discord username into the "voted" list/array.
       if (message.content.toLowerCase() == "-abstain") {
-        voted.push(message.author);
+        voted.push(message.author.id);
         message.delete();
         //Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
         vars.abstain++;
@@ -302,11 +302,11 @@ bot.on("message", async message => {
       message.delete();
       message.channel.send(`:x: Make sure everyone has voted! Only ` + vars.votednum + " out of " + vars.delegates + ` have voted.`);
     } else if (vars.pollactive == true && vars.votednum == vars.delegates) {
-      vars.pollactive = false;
       message.channel.send(":ballot_box: Poll has ended!" + "\n" +
         "Number of delegates who voted **Yes**: " + vars.yes + "\n" +
         "Number of delegates who voted **No**: " + vars.no + "\n" +
         "Number of delegates who **abstained** from voting: " + vars.abstain);
+      vars.pollactive = false;
       vars.yes = 0;
       vars.no = 0;
       vars.abstain = 0;
