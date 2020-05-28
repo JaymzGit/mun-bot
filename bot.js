@@ -106,7 +106,8 @@ bot.on("message", async message => {
     /*Vote command*/
     var voted = vars.voted;
     if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
-        if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)) {
+        if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true &&
+           vars.votednum < vars.delegates && !voted.includes(message.author)) {
             var arrvote = message.content.split(" ");
             //If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
             if (arrvote[1].toLowerCase() == "yes") {
