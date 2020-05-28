@@ -113,132 +113,83 @@ bot.on("message", async message => {
 
   /*Vote command*/
   var voted = vars.voted;
-  if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
-    if (message.content.toLowerCase()
-      .startsWith("-vote") && vars.pollactive == true &&
-      vars.votednum < vars.delegates && !voted.includes(message.author.id)) {
-      var arrvote = message.content.split(" ");
-      //If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
-      if (arrvote[1].toLowerCase() == "yes") {
-        voted.push(message.author.id);
-        message.delete();
-        //Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
-        vars.yes++;
-        vars.votednum++;
-        //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
-        message.channel.send(`:ballot_box: ${user} has voted **Yes**. ` + `[` + vars.votednum + "/" + vars.delegates + `]`);
-        return;
-      }
-
-      //If delegate performed the command "-vote no", it will move delegate's discord username into the "voted" list/array.
-      if (arrvote[1].toLowerCase() == "no") {
-        voted.push(message.author.id);
-        message.delete();
-        //Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
-        vars.no++;
-        vars.votednum = vars.votednum + 1;
-        //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-        message.channel.send(`:ballot_box: ${user} has voted **No**. ` + `[` + vars.votednum + "/" + vars.delegates + `]`);
-        return;
-      }
-
-      //If delegate performed the command "-vote abstain", it will move delegate's discord username into the "voted" list/array.
-      if (arrvote[1].toLowerCase() == "abstain") {
-        voted.push(message.author.id);
-        message.delete();
-        //Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
-        vars.abstain++;
-        vars.votednum++;
-        //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-        message.channel.send(`:ballot_box: ${user} has **abstained** from voting. ` + `[` + vars.votednum + "/" + vars.delegates + `]`);
-        return;
-      }
-    } else if (message.content.toLowerCase()
-      .startsWith("-vote ") && vars.pollactive == true &&
-      vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
-      message.delete();
-      message.channel.send(`:x: ${user} You have already voted once`);
-    } else if (message.content.toLowerCase()
-      .startsWith("-vote ") && vars.pollactive == false) {
-      message.delete();
-      message.channel.send(`:x: ${user} There is no active poll to vote for`);
-    }
-  } else if (message.content.toLowerCase()
-    .startsWith("-vote") && vars.pollactive == true &&
-    (!message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin'))) {
-    if (message.author.bot) return;
-    message.delete();
-    message.channel.send(":x: You do not have permission to vote " + `${user}`)
-    return;
-  }
-
+  var votedoptions = vars.votedoptions;
   if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
     if (vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author.id)) {
       //If delegate performed the command "-yes", it will move delegate's discord username into the "voted" list/array.
-      if (message.content.toLowerCase() == "-yes") {
+      if (message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") {
         voted.push(message.author.id);
+        votedoptions.push("yes");
         message.delete();
         //Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
         vars.yes++;
         vars.votednum++;
         //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
         message.channel.send(`:ballot_box: ${user} has voted **Yes**. ` + `[` + vars.votednum + "/" + vars.delegates + `]`);
-        return;
+
       }
       //If delegate performed the command "-no", it will move delegate's discord username into the "voted" list/array.
-      if (message.content.toLowerCase() == "-no") {
+      if (message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") {
         voted.push(message.author.id);
+        votedoptions.push("no");
         message.delete();
         //Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
         vars.no++;
         vars.votednum++;
         //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
         message.channel.send(`:ballot_box: ${user} has voted **No**. ` + `[` + vars.votednum + "/" + vars.delegates + `]`);
-        return;
+
       }
       //If delegate performed the command "-abstain", it will move delegate's discord username into the "voted" list/array.
-      if (message.content.toLowerCase() == "-abstain") {
+      if (message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") {
         voted.push(message.author.id);
+        votedoptions.push("abstain");
         message.delete();
         //Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
         vars.abstain++;
         vars.votednum++;
         //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
         message.channel.send(`:ballot_box: ${user} has **abstained** from voting. ` + `[` + vars.votednum + "/" + vars.delegates + `]`);
-        return;
+
       }
-    } else if (message.content.toLowerCase()
-      .startsWith("-yes") && vars.pollactive == true &&
+    } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.pollactive == true &&
       vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
       message.delete();
       message.channel.send(`:x: ${user} You have already voted once`);
-    } else if (message.content.toLowerCase()
-      .startsWith("-yes") && vars.pollactive == false) {
+    } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.pollactive == false) {
       message.delete();
       message.channel.send(`:x: ${user} There is no active poll to vote for`);
 
-    } else if (message.content.toLowerCase()
-      .startsWith("-no") && vars.pollactive == true &&
+    } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.pollactive == true &&
       vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
       message.delete();
       message.channel.send(`:x: ${user} You have already voted once`);
-    } else if (message.content.toLowerCase()
-      .startsWith("-no") && vars.pollactive == false) {
+    } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.pollactive == false) {
       message.delete();
       message.channel.send(`:x: ${user} There is no active poll to vote for`);
 
-    } else if (message.content.toLowerCase()
-      .startsWith("-abstain") && vars.pollactive == true &&
+    } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.pollactive == true &&
       vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
       message.delete();
       message.channel.send(`:x: ${user} You have already voted once`);
-    } else if (message.content.toLowerCase()
-      .startsWith("-abstain") && vars.pollactive == false) {
+    } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.pollactive == false) {
       message.delete();
       message.channel.send(`:x: ${user} There is no active poll to vote for`);
     }
   }
-
+  if (vars.pollactive == true && vars.votednum == vars.delegates) {
+    vars.pollactive = false;
+    message.channel.send(":ballot_box: Poll has ended!" + "\n" +
+      "Number of delegates who voted **Yes**: " + vars.yes + "\n" +
+      "Number of delegates who voted **No**: " + vars.no + "\n" +
+      "Number of delegates who **abstained** from voting: " + vars.abstain);
+    vars.yes = 0;
+    vars.no = 0;
+    vars.abstain = 0;
+    vars.delegates = 0;
+    vars.votednum = 0;
+    vars.voted = [];
+  }
   /*Allow revote command*/
   if (message.member.roles.some(role => role.name === 'Chair') || message.member.roles.some(role => role.name === 'Admin')) {
     if (message.content.toLowerCase()
@@ -250,6 +201,13 @@ bot.on("message", async message => {
         const index = voted.indexOf(pinged.id);
         if (index > -1) {
           voted.splice(index, 1);
+          if (votedoptions[index] == "yes") {
+            vars.yes--;
+          } else if (votedoptions[index] == "no") {
+            vars.no--;
+          } else if (votedoptions[index] == "no") {
+            vars.abstain--;
+          }
         }
       } else if (!voted.includes(pinged.id)) {
         message.channel.send(`:x: ${pinged} has not voted yet!`)
@@ -267,7 +225,6 @@ bot.on("message", async message => {
       return;
     }
   }
-
   /*End poll command*/
   //Ends poll accordingly if the conditions are met.
   if (message.member.roles.some(role => role.name === 'Chair') || message.member.roles.some(role => role.name === 'Admin') ||
