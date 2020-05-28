@@ -153,7 +153,7 @@ bot.on("message", async message => {
             message.channel.send(`:x: ${user} There is no active poll to vote for`);
         }
     }
-    //else if (message.content.toLowerCase().startsWith("-vote yes") && vars.pollactive == true &&
+    //else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == true &&
     // !message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin')) {
     //   message.delete();
     //   message.channel.send(`:x: You do not have permission to do this command ${user}`)
