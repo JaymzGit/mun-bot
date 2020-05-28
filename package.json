@@ -11,6 +11,6 @@
     "author": "JaymzCS",
     "liscense": "ISC",
     "dependencies": {
-        "discord.js": "^12.2.0"
+        "discord.js": "^11.6.4"
     }
 }
