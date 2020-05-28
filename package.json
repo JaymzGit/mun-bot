@@ -1,16 +1,20 @@
 {
     "name": "mun-bot",
     "version": "3.2.0",
-    "description": "MUN Bot.",
-    "main": "index.js",
+    "description": "Jay's Discord Bot for Ham5teak",
+    "main": "bot.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node ."
-           
+        "start": "node bot.js"
     },
     "author": "JaymzCS",
     "liscense": "ISC",
     "dependencies": {
-        "discord.js": "^11.6.4"
+        "discord.js": "^11.6.4",
+        "js-beautify": "^1.10.1-rc2",
+        "minecraft-server-util": "^1.1.1",
+        "mysql": "^2.18.1",
+        "node.js": "0.0.1-security",
+        "profanities": "^2.13.0"
     }
 }
