@@ -60,9 +60,9 @@ bot.on("message", async message => {
         }
 
     } else if (message.content.toLowerCase().startsWith("-voters ") && vars.pollactive == false) {
-        if (!message.member.roles.some(role => role.name === 'Admin') || !message.member.roles.some(role => role.name === 'Chair')) {
+        if(!message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin')) {
             message.delete();
-            message.channel.send(`:x: You do not have permission to do this command ${user}`)
+            message.channel.send(":x: You do not have permission to set voters " + `${user}`)
             return;
         }
     }
@@ -79,8 +79,8 @@ bot.on("message", async message => {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates != 0) {
             message.delete();
-            message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**.
-             :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
+            message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` + 
+              `\n` + `> ${message.content.toString().slice(6)}`);
             vars.pollactive = true;
         }
 
@@ -96,9 +96,9 @@ bot.on("message", async message => {
             message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
         }
     } else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false) {
-        if (!message.member.roles.some(role => role.name === 'Admin') || !message.member.roles.some(role => role.name === 'Chair')) {
+        if(!message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin')) {
             message.delete();
-            message.channel.send(`:x: You do not have permission to do this command ${user}`)
+      message.channel.send(":x: You do not have permission to start a poll " + `${user}`)
             return;
         }
     }
@@ -106,12 +106,11 @@ bot.on("message", async message => {
     /*Vote command*/
     var voted = vars.voted;
     if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
-        if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true && 6 && !voted.includes(message.author)) {
+        if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)) {
             var arrvote = message.content.split(" ");
             //If delegate performed the command "-vote yes", it will move delegate's discord username into the "voted" list/array.
             if (arrvote[1].toLowerCase() == "yes") {
                 voted.push(message.author.id);
-                console.log(`Current array of voters : ` + voted);
                 message.delete();
                 //Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
                 vars.yes++;
@@ -148,17 +147,16 @@ bot.on("message", async message => {
           vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
             message.delete();
             message.channel.send(`:x: ${user} You have already voted once`);
-        } else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == false) {
+        } else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == false){
             message.delete();
             message.channel.send(`:x: ${user} There is no active poll to vote for`);
         }
+    } else if (message.content.toLowerCase().startsWith("-vote") && vars.pollactive == true &&
+      (!message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin'))) {
+      message.delete();
+      message.channel.send(":x: You do not have permission to vote " + `${user}`)
+      return;
     }
-    //else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == true &&
-    // !message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin')) {
-    //   message.delete();
-    //   message.channel.send(`:x: You do not have permission to do this command ${user}`)
-    //   return;
-    // }
 
     if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
         if (vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)) {
@@ -232,7 +230,6 @@ bot.on("message", async message => {
                 if (index > -1) {
                     voted.splice(index, 1);
                 }
-                console.log(`Current array of voters : ` + voted);
             } else if (!voted.includes(pinged.id)) {
                 message.channel.send(`:x: ${pinged} has not voted yet!`)
             }
@@ -241,9 +238,9 @@ bot.on("message", async message => {
             message.channel.send(`:warning: There is no poll active currently.`);
         }
     } else if (message.content.toLowerCase().startsWith("-allow")) {
-        if (!message.member.roles.some(role => role.name === 'Admin') || !message.member.roles.some(role => role.name === 'Chair')) {
+        if(!message.member.roles.some(role => role.name === 'Chair') || !message.member.roles.some(role => role.name === 'Admin')) {
             message.delete();
-            message.channel.send(`:x: You do not have permission to do this command ${user}`);
+            message.channel.send(":x: You do not have permission to do grant a revote " + `${user}`)
             return;
         }
     }
@@ -267,7 +264,7 @@ bot.on("message", async message => {
         }
 
         //Checks if a poll is active before being able to end. (Logic)
-        else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == false) {
+        else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == false){
             vars.pollactive = false;
             message.delete();
             message.channel.send(`:x: ${user} There is no active poll currently`);
@@ -279,9 +276,9 @@ bot.on("message", async message => {
             message.channel.send(`:x: Make sure everyone has voted before ending the poll.`);
         }
 
-    } else if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == false) {
-        if (!message.member.roles.some(role => role.name === 'Admin') || !message.member.roles.some(role => role.name === 'Chair')) {
-            message.channel.send(`:x: You do not have permission to do this command ${user}`)
+    } else if (message.content.toLowerCase().startsWith("-end")) {
+        if (!message.member.roles.some(role => role.name === 'Chair') || !message.member.roles.some(role => role.name === 'Admin')) {
+            message.channel.send(":x: You do not have permission to end a poll " + `${user}`)
             return;
         }
     }
@@ -304,6 +301,11 @@ bot.on("message", async message => {
             vars.votednum = 0;
             vars.voted = [];
         }
+    } else if (message.content.toLowerCase().startsWith("-force end") && vars.pollactive == false) {
+        if (!message.member.roles.some(role => role.name === 'Chair') || !message.member.roles.some(role => role.name === 'Admin')) {
+            message.channel.send(":x: You do not have permission to force end a poll " + `${user}`)
+            return;
+        }
     }
 
     let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
@@ -321,3 +323,4 @@ bot.on("message", async message => {
     if (commandfile) commandfile.run(bot, message, args);
 
 })
+bot.login(process.env.BOT_TOKEN);
