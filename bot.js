@@ -79,8 +79,8 @@ bot.on("message", async message => {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         else if (message.content.toLowerCase().startsWith("-poll") && vars.pollactive == false && vars.delegates != 0) {
             message.delete();
-            message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` +
-                `\n` + `> ${message.content.toString().slice(6)}`);
+            message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**.
+             :ballot_box:` + `\n` + `> ${message.content.toString().slice(6)}`);
             vars.pollactive = true;
         }
 
@@ -102,7 +102,6 @@ bot.on("message", async message => {
             return;
         }
     }
-
 
     /*Vote command*/
     var voted = vars.voted;
@@ -145,7 +144,8 @@ bot.on("message", async message => {
                 message.channel.send(`:ballot_box: ${user} has **abstained** from voting.`);
                 return;
             }
-        } else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == true && vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
+        } else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == true && 
+          vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
             message.delete();
             message.channel.send(`:x: ${user} You have already voted once`);
         } else if (message.content.toLowerCase().startsWith("-vote ") && vars.pollactive == false) {
@@ -153,11 +153,13 @@ bot.on("message", async message => {
             message.channel.send(`:x: ${user} There is no active poll to vote for`);
         }
     }
-    //else if (message.content.toLowerCase().startsWith("-vote yes") && vars.pollactive == true && !message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin')) {
+    //else if (message.content.toLowerCase().startsWith("-vote yes") && vars.pollactive == true &&
+    // !message.member.roles.some(role => role.name === 'Delegate') || !message.member.roles.some(role => role.name === 'Admin')) {
     //   message.delete();
     //   message.channel.send(`:x: You do not have permission to do this command ${user}`)
     //   return;
     // }
+
     if (message.member.roles.some(role => role.name === 'Delegate') || message.member.roles.some(role => role.name === 'Admin')) {
         if (vars.pollactive == true && vars.votednum < vars.delegates && !voted.includes(message.author)) {
             //If delegate performed the command "-yes", it will move delegate's discord username into the "voted" list/array.
@@ -193,21 +195,24 @@ bot.on("message", async message => {
                 message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
                 return;
             }
-        } else if (message.content.toLowerCase().startsWith("-yes") && vars.pollactive == true && vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
+        } else if (message.content.toLowerCase().startsWith("-yes") && vars.pollactive == true &&
+         vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
             message.delete();
             message.channel.send(`:x: ${user} You have already voted once`);
         } else if (message.content.toLowerCase().startsWith("-yes") && vars.pollactive == false) {
             message.delete();
             message.channel.send(`:x: ${user} There is no active poll to vote for`);
 
-        } else if (message.content.toLowerCase().startsWith("-no") && vars.pollactive == true && vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
+        } else if (message.content.toLowerCase().startsWith("-no") && vars.pollactive == true &&
+         vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
             message.delete();
             message.channel.send(`:x: ${user} You have already voted once`);
         } else if (message.content.toLowerCase().startsWith("-no") && vars.pollactive == false) {
             message.delete();
             message.channel.send(`:x: ${user} There is no active poll to vote for`);
 
-        } else if (message.content.toLowerCase().startsWith("-abstain") && vars.pollactive == true && vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
+        } else if (message.content.toLowerCase().startsWith("-abstain") && vars.pollactive == true &&
+         vars.votednum <= vars.delegates && voted.includes(message.author.id)) {
             message.delete();
             message.channel.send(`:x: ${user} You have already voted once`);
         } else if (message.content.toLowerCase().startsWith("-abstain") && vars.pollactive == false) {
@@ -249,8 +254,10 @@ bot.on("message", async message => {
         if (message.content.toLowerCase().startsWith("-end") && vars.pollactive == true && vars.votednum == vars.delegates) {
             vars.pollactive = false;
             message.delete();
-            message.channel.send(":ballot_box: Poll has ended!" + "\n" + "Number of delegates who voted **Yes**: " + vars.yes +
-                "\n" + "Number of delegates who voted **No**: " + vars.no + "\n" + "Number of delegates who **abstained** from voting: " + vars.abstain);
+            message.channel.send(":ballot_box: Poll has ended!" + "\n" + 
+              "Number of delegates who voted **Yes**: " + vars.yes + "\n" + 
+              "Number of delegates who voted **No**: " + vars.no + "\n" +
+              "Number of delegates who **abstained** from voting: " + vars.abstain);
             vars.yes = 0;
             vars.no = 0;
             vars.abstain = 0;
@@ -285,8 +292,11 @@ bot.on("message", async message => {
             vars.pollactive = false;
             var remaining = vars.delegates - vars.votednum;
             message.delete();
-            message.channel.send(":ballot_box: Poll has ended!" + "\n" + "Number of delegates who voted **Yes**: " + vars.yes +
-                "\n" + "Number of delegates who voted **No**: " + vars.no + "\n" + "Number of delegates who **abstained** from voting: " + vars.abstain + "\n" + "Number of delegates who didn't vote : " + remaining);
+            message.channel.send(":ballot_box: Poll has ended!" + "\n" + 
+              "Number of delegates who voted **Yes**: " + vars.yes + "\n" + 
+              "Number of delegates who voted **No**: " + vars.no + "\n" + 
+              "Number of delegates who **abstained** from voting: " + vars.abstain + "\n" + 
+              "Number of delegates who didn't vote : " + remaining);
             vars.yes = 0;
             vars.no = 0;
             vars.abstain = 0;
@@ -309,6 +319,5 @@ bot.on("message", async message => {
     let args = messageArray.slice(1);
     let commandfile = bot.commands.get(cmd.slice(prefix.length));
     if (commandfile) commandfile.run(bot, message, args);
-})
 
-bot.login(process.env.BOT_TOKEN);
+})
