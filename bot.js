@@ -177,7 +177,7 @@ bot.on("message", async message => {
                 voted.push(message.author);
                 message.delete();
                 //Doing so will add 1 to the "No" count and total vote count which will be revealed at the end of voting.
-                vars.yes++;
+                vars.no++;
                 vars.votednum++;
                 //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
                 message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
@@ -188,7 +188,7 @@ bot.on("message", async message => {
                 voted.push(message.author);
                 message.delete();
                 //Doing so will add 1 to the "Abstain" count and total vote count which will be revealed at the end of voting.
-                vars.yes++;
+                vars.abstain++;
                 vars.votednum++;
                 //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
                 message.channel.send(`:ballot_box: ${user} has voted **Yes**.`);
