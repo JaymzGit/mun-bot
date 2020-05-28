@@ -11,6 +11,6 @@
     "liscense": "ISC",
     "dependencies": {
         "discord.js": "^11.6.4",
-        "node.js": "0.0.1-security",
+        "node.js": "0.0.1-security"
     }
 }
