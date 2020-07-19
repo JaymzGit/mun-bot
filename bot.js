@@ -161,7 +161,7 @@ bot.on("message", async message => {
           message.channel.send(vars.channels[n].channelID);
           message.channel.send(n);
           //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
-          message.channel.send(`:ballot_box: ${user} has voted **no**. ` + `[` + vars.channels[n].votednum + "/" + vars.channels[n].delegates + `]`);
+          message.channel.send(`:ballot_box: ${user} has voted **No**. ` + `[` + vars.channels[n].votednum + "/" + vars.channels[n].delegates + `]`);
           n = 0;
           break;
         }
@@ -203,13 +203,6 @@ bot.on("message", async message => {
     }
   }
 
-
-
-
-
-
-
-
 /*  for (let j in vars.channels) {
     if ((vars.channels[j].channelID == message.channel.id) && vars.channels[j].pollactive == true && vars.channels[j].votednum == vars.channels[j].delegates) {
       vars.channels[j].pollactive = false;
@@ -226,6 +219,7 @@ bot.on("message", async message => {
       break;
     }
   }*/
+ 
   /*Allow revote command*/
   if (message.content.toLowerCase().startsWith("-allow")){
     if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
