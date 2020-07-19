@@ -59,18 +59,14 @@ bot.on("message", async message => {
             //message.channel.send(vars.channels[i].pollactive);
             vars.channels[i].delegates = arr[1];
             //message.channel.send(vars.channels[i].delegates);
-
             break;
 
           } else if (vars.channels[i].channelID == "0" && arr[1] == null) {
             message.channel.send(":warning: Please insert a number!");
-
-
             //Sets the number of delegates/voters accordingly if an integer is provided.
 
           } else if (vars.channels[i].channelID == "0" && Number.isInteger(arr[1]) == false) {
             message.channel.send(":warning: Please insert a valid number!")
-
           }
         }
       }
@@ -102,7 +98,6 @@ bot.on("message", async message => {
           break;
         }
 
-
         //Checks if a poll is currently active before starting a new poll.
         else if ((vars.channels[x].channelID == message.channel.id && vars.channels[x].pollactive == true)) {
           message.delete();
@@ -111,7 +106,6 @@ bot.on("message", async message => {
         }
       }
     } else if (!message.member.roles.cache.some(role => role.name === 'Delegate') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
-
       message.delete();
       message.channel.send(":x: You do not have permission to start a poll " + `${user}`);
       return;
@@ -219,7 +213,7 @@ bot.on("message", async message => {
       break;
     }
   }*/
- 
+
   /*Allow revote command*/
   if (message.content.toLowerCase().startsWith("-allow")){
     if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
@@ -333,6 +327,5 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
   if (commandfile) commandfile.run(bot, message, args);
-
 })
 bot.login(process.env.BOT_TOKEN);
