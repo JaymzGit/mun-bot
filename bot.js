@@ -6,13 +6,15 @@ const bot = new Discord.Client({
   disableEveryone: true
 });
 var vars = require("./vars.json");
+var d = new Date().toLocaleTimeString();
 bot.commands = new Discord.Collection();
 
 bot.on("ready", async () => {
-  console.log(`${bot.user.username} is online!`);
+  console.log(`>...[${d} INFO]: [MUN Bot]: ${bot.user.username} Bot is starting!`);
   bot.user.setActivity("-help", {
     type: "PLAYING"
   });
+  console.log(`>...[${d} INFO]: [MUN Bot]: ${bot.user.username} Bot started!`);
 })
 
 bot.on("message", async message => {
@@ -50,23 +52,24 @@ bot.on("message", async message => {
           message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!");
           break;
         } else {
-          if (vars.channels[i].channelID == "0" && (arr[1] % 1 == 0)) {
+          if (vars.channels[i].channelID == "0" && (arr[1] % 1 == 0) &&(arr[1] != 0)) {
             message.delete();
             vars.channels[i].channelID = message.channel.id;
             vars.channels[i].delegates = arr[1];
-            console.log("Number of delegates set to " + vars.channels[i].delegates + " in " + vars.channels[i].channelID + ".");
-            message.channel.send("Number of delegates set to " + vars.channels[i].delegates + " in " + vars.channels[i].channelID + ".");
-            //message.channel.send(vars.channels[i].pollactive);
-            vars.channels[i].delegates = arr[1];
-            //message.channel.send(vars.channels[i].delegates);
+            console.log(`>...[${d} INFO]: [MUN Bot]: Number of delegates set to `  + vars.channels[i].delegates + " in channel ID: " + "'" + vars.channels[i].channelID + "'");
+            message.channel.send("Number of delegates set to " + vars.channels[i].delegates + ".");
+
             break;
 
           } else if (vars.channels[i].channelID == "0" && arr[1] == null) {
             message.channel.send(":warning: Please insert a number!");
+            break;
+
             //Sets the number of delegates/voters accordingly if an integer is provided.
 
           } else if (vars.channels[i].channelID == "0" && Number.isInteger(arr[1]) == false) {
             message.channel.send(":warning: Please insert a valid number!")
+            break;
           }
         }
       }
@@ -88,15 +91,17 @@ bot.on("message", async message => {
           message.channel.send(`:ballot_box: ${user} started a vote! Reply with **-vote yes** / **-vote no** / **-vote abstain**. :ballot_box:` +
               `\n` + `> ${message.content.toString().slice(6)}`);
           vars.channels[x].pollactive = true
+          console.log(`>...[${d} INFO]: [MUN Bot]: A poll was succesfully created.`)
           break;
         }
 
         //Checks if the number of voters is already set prior to the poll command being issued.
-        else if ((vars.channels[x].channelID == message.channel.id && vars.channels[x].delegates == 0)) {
+        else if ((vars.channels[x].channelID == message.channel.id && vars.channels[x].delegates == 0) || vars.channels[x].channelID == 0) {
           message.delete();
           message.channel.send(":x: Please set number of voters with `-voters n`")
           break;
         }
+
 
         //Checks if a poll is currently active before starting a new poll.
         else if ((vars.channels[x].channelID == message.channel.id && vars.channels[x].pollactive == true)) {
@@ -106,6 +111,7 @@ bot.on("message", async message => {
         }
       }
     } else if (!message.member.roles.cache.some(role => role.name === 'Delegate') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+
       message.delete();
       message.channel.send(":x: You do not have permission to start a poll " + `${user}`);
       return;
@@ -124,8 +130,6 @@ bot.on("message", async message => {
           //Doing so will add 1 to the "Yes" count and total vote count which will be revealed at the end of voting.
           vars.channels[y].yes++;
           vars.channels[y].votednum++;
-          message.channel.send(vars.channels[y].channelID);
-          message.channel.send(y);
           //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted yes.
           message.channel.send(`:ballot_box: ${user} has voted **Yes**. ` + `[` + vars.channels[y].votednum + "/" + vars.channels[y].delegates + `]`);
           y = 0;
@@ -135,7 +139,7 @@ bot.on("message", async message => {
     } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.channels[y].pollactive == true &&
         vars.channels[y].votednum <= vars.channels[y].delegates && vars.channels[y].voted.includes(message.author.id)) {
       message.delete();
-      message.channel.send(`:x: ${user} You have already voted once`);
+      message.channel.send(`:x: ${user} You have already voted once!`);
       return;
     }
   }
@@ -152,8 +156,6 @@ bot.on("message", async message => {
           //Doing so will add 1 to the "no" count and total vote count which will be revealed at the end of voting.
           vars.channels[n].no++;
           vars.channels[n].votednum++;
-          message.channel.send(vars.channels[n].channelID);
-          message.channel.send(n);
           //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted no.
           message.channel.send(`:ballot_box: ${user} has voted **No**. ` + `[` + vars.channels[n].votednum + "/" + vars.channels[n].delegates + `]`);
           n = 0;
@@ -163,7 +165,7 @@ bot.on("message", async message => {
     } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == true &&
         vars.channels[n].votednum <= vars.channels[n].delegates && vars.channels[n].voted.includes(message.author.id)) {
       message.delete();
-      message.channel.send(`:x: ${user} You have already voted once`);
+      message.channel.send(`:x: ${user} You have already voted once!`);
       return;
     }
   }
@@ -184,7 +186,7 @@ bot.on("message", async message => {
           message.channel.send(vars.channels[a].channelID);
           message.channel.send(a);
           //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted abstain.
-          message.channel.send(`:ballot_box: ${user} has voted **abstain**. ` + `[` + vars.channels[a].votednum + "/" + vars.channels[a].delegates + `]`);
+          message.channel.send(`:ballot_box: ${user} has **abstained** from voting. ` + `[` + vars.channels[a].votednum + "/" + vars.channels[a].delegates + `]`);
           a = 0;
           break;
         }
@@ -192,27 +194,28 @@ bot.on("message", async message => {
     } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.channels[a].pollactive == true &&
         vars.channels[a].votednum <= vars.channels[a].delegates && vars.channels[a].voted.includes(message.author.id)) {
       message.delete();
-      message.channel.send(`:x: ${user} You have already voted once`);
+      message.channel.send(`:x: ${user} You have already voted once!`);
       return;
     }
   }
 
-/*  for (let j in vars.channels) {
-    if ((vars.channels[j].channelID == message.channel.id) && vars.channels[j].pollactive == true && vars.channels[j].votednum == vars.channels[j].delegates) {
-      vars.channels[j].pollactive = false;
+
+  for (let e in vars.channels) {
+    if ((vars.channels[e].channelID == message.channel.id) && vars.channels[e].pollactive == true && vars.channels[e].votednum == vars.channels[e].delegates) {
+      vars.channels[e].pollactive = false;
       message.channel.send(":ballot_box: Poll has ended!" + "\n" +
-          "Number of delegates who voted **Yes**: " + vars.channels[i].yes + "\n" +
-          "Number of delegates who voted **No**: " + vars.channels[i].no + "\n" +
-          "Number of delegates who **abstained** from voting: " + vars.channels[i].abstain);
-      vars.channels[j].channelID = 0;
-      vars.channels[j].yes = 0;
-      vars.channels[j].no = 0;
-      vars.channels[j].abstain = 0;
-      vars.channels[j].delegates = 0;
-      vars.channels[j].voted = [];
+          "Number of delegates who voted **Yes**: " + vars.channels[e].yes + "\n" +
+          "Number of delegates who voted **No**: " + vars.channels[e].no + "\n" +
+          "Number of delegates who **abstained** from voting: " + vars.channels[e].abstain);
+      vars.channels[e].channelID = 0;
+      vars.channels[e].yes = 0;
+      vars.channels[e].no = 0;
+      vars.channels[e].abstain = 0;
+      vars.channels[e].delegates = 0;
+      vars.channels[e].voted = [];
       break;
     }
-  }*/
+  }
 
   /*Allow revote command*/
   if (message.content.toLowerCase().startsWith("-allow")){
@@ -313,6 +316,31 @@ bot.on("message", async message => {
       return;
     }
   }
+
+
+  if (message.content.toLowerCase().startsWith("-force voters")){
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+      var arr = message.content.split(" ");
+      for (let o in vars.channels) {
+        if ((vars.channels[o].channelID == message.channel.id)) {
+              if ((arr[2] % 1 == 0) && (arr[2] != 0)) {
+                message.delete();
+                vars.channels[o].channelID = message.channel.id;
+                vars.channels[o].delegates = arr[2];
+                console.log(`>...[${d} INFO]: [MUN Bot]: Number of delegates changed to ` + vars.channels[o].delegates + " in channel ID: " + "'" + vars.channels[o].channelID + "'");
+                message.channel.send("Number of delegates changed to " + vars.channels[o].delegates + ".");
+                i = 0;
+                break;
+              }
+        }
+      }
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+      message.channel.send(":x: You do not have permission to force end a poll " + `${user}`)
+      return;
+    }
+  }
+
+
 
   let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
   if (!prefixes[message.guild.id]) {
