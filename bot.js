@@ -289,12 +289,12 @@ bot.on("message", async message => {
 
   /*Force end command*/
   if (message.content.toLowerCase().startsWith("-force end")){
+  message.delete();
   if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
     for (let i in vars.channels) {
       if ((vars.channels[i].channelID == message.channel.id) && vars.channels[i].pollactive == true) {
         vars.channels[i].pollactive = false;
         var remaining = vars.channels[i].delegates - vars.channels[i].votednum;
-        message.delete();
         message.channel.send(":ballot_box: Poll has ended!" + "\n" +
             "Number of delegates who voted **Yes**: " + vars.channels[i].yes + "\n" +
             "Number of delegates who voted **No**: " + vars.channels[i].no + "\n" +
@@ -335,7 +335,7 @@ bot.on("message", async message => {
         }
       }
     } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
-      message.channel.send(":x: You do not have permission to force end a poll " + `${user}`)
+      message.channel.send(":x: You do not have permission to change the number of voters " + `${user}`)
       return;
     }
   }
