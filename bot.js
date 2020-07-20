@@ -134,13 +134,17 @@ bot.on("message", async message => {
           message.channel.send(`:ballot_box: ${user} has voted **Yes**. ` + `[` + vars.channels[y].votednum + "/" + vars.channels[y].delegates + `]`);
           y = 0;
           break;
+        } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.channels[y].pollactive == true &&
+            vars.channels[y].votednum <= vars.channels[y].delegates && vars.channels[y].voted.includes(message.author.id)) {
+          message.delete();
+          message.channel.send(`:x: You have already voted once! ${user}`);
+          return;
+        } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.channels[y].pollactive == false ) {
+          message.delete();
+          message.channel.send(`:x: No active poll ${user}`);
+          return;
         }
       }
-    } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.channels[y].pollactive == true &&
-        vars.channels[y].votednum <= vars.channels[y].delegates && vars.channels[y].voted.includes(message.author.id)) {
-      message.delete();
-      message.channel.send(`:x: ${user} You have already voted once!`);
-      return;
     }
   }
 
@@ -160,13 +164,17 @@ bot.on("message", async message => {
           message.channel.send(`:ballot_box: ${user} has voted **No**. ` + `[` + vars.channels[n].votednum + "/" + vars.channels[n].delegates + `]`);
           n = 0;
           break;
+        } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == true &&
+          vars.channels[n].votednum <= vars.channels[n].delegates && vars.channels[n].voted.includes(message.author.id)) {
+          message.delete();
+          message.channel.send(`:x: You have already voted once! ${user}`);
+          return;
+        } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == false ) {
+          message.delete();
+          message.channel.send(`:x: No active poll ${user}`);
+          return;
         }
       }
-    } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == true &&
-        vars.channels[n].votednum <= vars.channels[n].delegates && vars.channels[n].voted.includes(message.author.id)) {
-      message.delete();
-      message.channel.send(`:x: ${user} You have already voted once!`);
-      return;
     }
   }
 
@@ -189,13 +197,17 @@ bot.on("message", async message => {
           message.channel.send(`:ballot_box: ${user} has **abstained** from voting. ` + `[` + vars.channels[a].votednum + "/" + vars.channels[a].delegates + `]`);
           a = 0;
           break;
+        } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.channels[a].pollactive == true &&
+            vars.channels[a].votednum <= vars.channels[a].delegates && vars.channels[a].voted.includes(message.author.id)) {
+          message.delete();
+          message.channel.send(`:x: You have already voted once! ${user}`);
+          return;
+        } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.channels[a].pollactive == false ) {
+          message.delete();
+          message.channel.send(`:x: No active poll ${user}`);
+          return;
         }
       }
-    } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.channels[a].pollactive == true &&
-        vars.channels[a].votednum <= vars.channels[a].delegates && vars.channels[a].voted.includes(message.author.id)) {
-      message.delete();
-      message.channel.send(`:x: ${user} You have already voted once!`);
-      return;
     }
   }
 
@@ -251,7 +263,7 @@ bot.on("message", async message => {
           break;
         }
       }
-      } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
       message.delete();
       message.channel.send(":x: You do not have permission to do grant a revote " + `${user}`)
       return;
@@ -281,7 +293,7 @@ bot.on("message", async message => {
           break;
         }
       }
-  }else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    }else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
       message.channel.send(":x: You do not have permission to end a poll " + `${user}`)
       return;
     }
@@ -289,28 +301,28 @@ bot.on("message", async message => {
 
   /*Force end command*/
   if (message.content.toLowerCase().startsWith("-force end")){
-  message.delete();
-  if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
-    for (let i in vars.channels) {
-      if ((vars.channels[i].channelID == message.channel.id) && vars.channels[i].pollactive == true) {
-        vars.channels[i].pollactive = false;
-        var remaining = vars.channels[i].delegates - vars.channels[i].votednum;
-        message.channel.send(":ballot_box: Poll has ended!" + "\n" +
-            "Number of delegates who voted **Yes**: " + vars.channels[i].yes + "\n" +
-            "Number of delegates who voted **No**: " + vars.channels[i].no + "\n" +
-            "Number of delegates who **abstained** from voting: " + vars.channels[i].abstain + "\n" +
-            "Number of delegates who didn't vote : " + remaining);
-        vars.channels[i].channelID =0;
-        vars.channels[i].yes = 0;
-        vars.channels[i].no = 0;
-        vars.channels[i].abstain = 0;
-        vars.channels[i].delegates = 0;
-        vars.channels[i].votednum = 0;
-        vars.channels[i].voted = [];
-        i = 0;
-        break;
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+      for (let i in vars.channels) {
+        if ((vars.channels[i].channelID == message.channel.id) && vars.channels[i].pollactive == true) {
+          vars.channels[i].pollactive = false;
+          var remaining = vars.channels[i].delegates - vars.channels[i].votednum;
+          message.delete();
+          message.channel.send(":ballot_box: Poll has ended!" + "\n" +
+              "Number of delegates who voted **Yes**: " + vars.channels[i].yes + "\n" +
+              "Number of delegates who voted **No**: " + vars.channels[i].no + "\n" +
+              "Number of delegates who **abstained** from voting: " + vars.channels[i].abstain + "\n" +
+              "Number of delegates who didn't vote : " + remaining);
+          vars.channels[i].channelID =0;
+          vars.channels[i].yes = 0;
+          vars.channels[i].no = 0;
+          vars.channels[i].abstain = 0;
+          vars.channels[i].delegates = 0;
+          vars.channels[i].votednum = 0;
+          vars.channels[i].voted = [];
+          i = 0;
+          break;
+        }
       }
-    }
     } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
       message.channel.send(":x: You do not have permission to force end a poll " + `${user}`)
       return;
@@ -323,15 +335,15 @@ bot.on("message", async message => {
       var arr = message.content.split(" ");
       for (let o in vars.channels) {
         if ((vars.channels[o].channelID == message.channel.id)) {
-              if ((arr[2] % 1 == 0) && (arr[2] != 0)) {
-                message.delete();
-                vars.channels[o].channelID = message.channel.id;
-                vars.channels[o].delegates = arr[2];
-                console.log(`>...[${d} INFO]: [MUN Bot]: Number of delegates changed to ` + vars.channels[o].delegates + " in channel ID: " + "'" + vars.channels[o].channelID + "'");
-                message.channel.send("Number of delegates changed to " + vars.channels[o].delegates + ".");
-                i = 0;
-                break;
-              }
+          if ((arr[2] % 1 == 0) && (arr[2] != 0)) {
+            message.delete();
+            vars.channels[o].channelID = message.channel.id;
+            vars.channels[o].delegates = arr[2];
+            console.log(`>...[${d} INFO]: [MUN Bot]: Number of delegates changed to ` + vars.channels[o].delegates + " in channel ID: " + "'" + vars.channels[o].channelID + "'");
+            message.channel.send("Number of delegates changed to " + vars.channels[o].delegates + ".");
+            i = 0;
+            break;
+          }
         }
       }
     } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
