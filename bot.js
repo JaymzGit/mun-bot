@@ -137,11 +137,7 @@ bot.on("message", async message => {
         } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.channels[y].pollactive == true &&
             vars.channels[y].votednum <= vars.channels[y].delegates && vars.channels[y].voted.includes(message.author.id)) {
           message.delete();
-          message.channel.send(`:x: You have already voted once! ${user}`);
-          return;
-        } else if ((message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") && vars.channels[y].pollactive == false ) {
-          message.delete();
-          message.channel.send(`:x: No active poll ${user}`);
+          message.channel.send(`:x: ${user} You have already voted once!`);
           return;
         }
       }
@@ -164,14 +160,10 @@ bot.on("message", async message => {
           message.channel.send(`:ballot_box: ${user} has voted **No**. ` + `[` + vars.channels[n].votednum + "/" + vars.channels[n].delegates + `]`);
           n = 0;
           break;
-        } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == true &&
-          vars.channels[n].votednum <= vars.channels[n].delegates && vars.channels[n].voted.includes(message.author.id)) {
+    } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == true &&
+        vars.channels[n].votednum <= vars.channels[n].delegates && vars.channels[n].voted.includes(message.author.id)) {
           message.delete();
-          message.channel.send(`:x: You have already voted once! ${user}`);
-          return;
-        } else if ((message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") && vars.channels[n].pollactive == false ) {
-          message.delete();
-          message.channel.send(`:x: No active poll ${user}`);
+          message.channel.send(`:x: ${user} You have already voted once!`);
           return;
         }
       }
@@ -200,11 +192,7 @@ bot.on("message", async message => {
         } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.channels[a].pollactive == true &&
             vars.channels[a].votednum <= vars.channels[a].delegates && vars.channels[a].voted.includes(message.author.id)) {
           message.delete();
-          message.channel.send(`:x: You have already voted once! ${user}`);
-          return;
-        } else if ((message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") && vars.channels[a].pollactive == false ) {
-          message.delete();
-          message.channel.send(`:x: No active poll ${user}`);
+          message.channel.send(`:x: ${user} You have already voted once!`);
           return;
         }
       }
@@ -367,5 +355,6 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
   if (commandfile) commandfile.run(bot, message, args);
+
 })
 bot.login(process.env.BOT_TOKEN);
