@@ -8,5 +8,9 @@
         "start": "node index.js"
     },
     "author": "JaymzCS",
-    "liscense": "ISC"
+    "liscense": "ISC",
+    "dependencies": {
+        "discord.js": "^12.3.1",
+        "node.js": "0.0.1-security"
+    }
 }
