@@ -21,6 +21,6 @@ This bot uses Javascript (JS) with the node module Discord.js
 1. Jaymz (myself)
 2. SottaByte
 
-Requested by Joshua Lee, as the USG of Conference Managementt for PMUN 2020.
+Requested by Joshua Lee, as the USG of Conference Management for PMUN 2020.
 > Copyright © 2020 JaymzGit
 
