@@ -4,6 +4,7 @@ This bot was orginally designed specifically for Penang Model United Nations 202
 (**PMUN 2020**)
 ###### It was made during the **Covid-19** (coronavirus) pandemic to allow **PMUN 2020** conference to continue virtually through Discord.
 This bot uses Javascript (JS) with the node module Discord.js
+
 **Features** :
 - [x] Able to set the number of voters before each poll session. 
 - [x] Able to change the number of voters if a poll has not been done yet.
