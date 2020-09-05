@@ -12,6 +12,6 @@ This bot was designed specifically for Penang Model United Nations
 - [x] Able to grant a revote if a Delegate decided to change their vote if they voted rashly.
 - [x] Allow the discord roles "Admin", "Secretariat", and "Secretariat General" to bypass all commands while "Delegate" only has perms to vote.
 - [x] Able to manually force the poll to end if one or more Delegates did not vote.
-\* Delegates may revote if granted by the Chair\
+######\* Delegates may revote if granted by the Chair\
 > Copyright © 2020 JaymzGit
 
