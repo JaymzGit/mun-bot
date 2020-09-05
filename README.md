@@ -1,5 +1,6 @@
 # mun-bot
 Please do not distribute this code or copy it without my permission.
+
 This bot was orginally designed specifically for Penang Model United Nations 2020.
 (**PMUN 2020**)
 ###### It was made during the **Covid-19** (coronavirus) pandemic to allow **PMUN 2020** conference to continue virtually through Discord.
