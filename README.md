@@ -2,7 +2,7 @@
 Please do not distribute this code or copy it without my permission.
 
 This bot was orginally designed specifically for Penang Model United Nations 2020.
-(**PMUN 2020**)
+(**PMUN 2020**) with their website : [PMUN 2020](https://penangmun20.wixsite.com/pmun2020)
 ###### It was made during the **Covid-19** (coronavirus) pandemic to allow **PMUN 2020** conference to continue virtually through Discord.
 This bot uses Javascript (JS) with the node module Discord.js
 
@@ -19,5 +19,7 @@ This bot uses Javascript (JS) with the node module Discord.js
 **This project was also a colaboration between** :
 1. Jaymz (myself)
 2. SottaByte
+
+Requested by Joshua Lee, as a representative 
 > Copyright © 2020 JaymzGit
 
