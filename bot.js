@@ -1,5 +1,6 @@
 //Import all libraries or dependecies
 const botconfig = require("./botconfig.json");
+const tokenfile = require("./token.json");
 const Discord = require("discord.js");
 const fs = require("fs");
 const bot = new Discord.Client({
@@ -45,7 +46,9 @@ bot.on("message", async message => {
   //Checks if there is an integer after the command.
   let x;
   if (message.content.toLowerCase().startsWith("-voters")) {
-    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       var arr = message.content.split(" ");
       for (i in vars.channels) {
         if (vars.channels[i].channelID === message.channel.id) {
@@ -83,7 +86,9 @@ bot.on("message", async message => {
   /*Poll Command*/
   //Outputs a warning/error to include a statement/argument after the command.
   if (message.content.toLowerCase().startsWith("-poll")) {
-    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (x in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[x].channelID == message.channel.id) && (vars.channels[x].pollactive == false) && (vars.channels[x].delegates != 0)) {
@@ -110,7 +115,9 @@ bot.on("message", async message => {
           break;
         }
       }
-    } else if (!message.member.roles.cache.some(role => role.name === 'Delegate') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretary General')) {
 
       message.delete();
       message.channel.send(":x: You do not have permission to start a poll " + `${user}`);
@@ -119,7 +126,10 @@ bot.on("message", async message => {
   }
 
   if (message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") {
-    if (message.member.roles.cache.some(role => role.name === 'Delegate') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
+        message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
+        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (y in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[y].channelID == message.channel.id) && (vars.channels[y].pollactive == true && vars.channels[y].votednum < vars.channels[y].delegates && !vars.channels[y].voted.includes(message.author.id))) {
@@ -145,7 +155,10 @@ bot.on("message", async message => {
   }
 
   if (message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") {
-    if (message.member.roles.cache.some(role => role.name === 'Delegate') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
+        message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
+        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (n in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[n].channelID == message.channel.id) && (vars.channels[n].pollactive == true && vars.channels[n].votednum < vars.channels[n].delegates && !vars.channels[n].voted.includes(message.author.id))) {
@@ -172,7 +185,10 @@ bot.on("message", async message => {
 
 
   if (message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") {
-    if (message.member.roles.cache.some(role => role.name === 'Delegate') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
+        message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
+        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (a in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[a].channelID == message.channel.id) && (vars.channels[a].pollactive == true && vars.channels[a].votednum < vars.channels[a].delegates && !vars.channels[a].voted.includes(message.author.id))) {
@@ -219,7 +235,9 @@ bot.on("message", async message => {
 
   /*Allow revote command*/
   if (message.content.toLowerCase().startsWith("-allow")){
-    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (let i in vars.channels) {
         if ((vars.channels[i].channelID == message.channel.id) && vars.channels[i].pollactive == true) {
           const pinged = message.mentions.users.first();
@@ -251,7 +269,9 @@ bot.on("message", async message => {
           break;
         }
       }
-    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       message.delete();
       message.channel.send(":x: You do not have permission to do grant a revote " + `${user}`)
       return;
@@ -261,7 +281,8 @@ bot.on("message", async message => {
   //Ends poll accordingly if the conditions are met.
   if (message.content.toLowerCase().startsWith("-end")) {
     if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') ||
-        message.member.roles.cache.some(role => role.name === 'Bots')) {
+        message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (let i in vars.channels) {
         if ((vars.channels[i].channelID == message.channel.id) && vars.channels[i].pollactive == true && vars.channels[i].votednum == vars.channels[i].delegates) {
           vars.channels[i].pollactive = false;
@@ -281,7 +302,9 @@ bot.on("message", async message => {
           break;
         }
       }
-    }else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       message.channel.send(":x: You do not have permission to end a poll " + `${user}`)
       return;
     }
@@ -289,7 +312,9 @@ bot.on("message", async message => {
 
   /*Force end command*/
   if (message.content.toLowerCase().startsWith("-force end")){
-    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (let i in vars.channels) {
         if ((vars.channels[i].channelID == message.channel.id) && vars.channels[i].pollactive == true) {
           vars.channels[i].pollactive = false;
@@ -311,7 +336,9 @@ bot.on("message", async message => {
           break;
         }
       }
-    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       message.channel.send(":x: You do not have permission to force end a poll " + `${user}`)
       return;
     }
@@ -319,7 +346,9 @@ bot.on("message", async message => {
 
 
   if (message.content.toLowerCase().startsWith("-force voters")){
-    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin')) {
+    if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       var arr = message.content.split(" ");
       for (let o in vars.channels) {
         if ((vars.channels[o].channelID == message.channel.id)) {
@@ -334,7 +363,9 @@ bot.on("message", async message => {
           }
         }
       }
-    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin')) {
+    } else if (!message.member.roles.cache.some(role => role.name === 'Chair') || !message.member.roles.cache.some(role => role.name === 'Admin') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+    	!message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       message.channel.send(":x: You do not have permission to change the number of voters " + `${user}`)
       return;
     }
@@ -348,6 +379,7 @@ bot.on("message", async message => {
       prefixes: botconfig.prefix
     };
   }
+
   let prefix = prefixes[message.guild.id].prefixes;
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
@@ -356,4 +388,4 @@ bot.on("message", async message => {
   if (commandfile) commandfile.run(bot, message, args);
 
 })
-bot.login(process.env.BOT_TOKEN);
+bot.login(tokenfile.token);
