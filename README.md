@@ -13,5 +13,9 @@ This bot was designed specifically for Penang Model United Nations
 - [x] Allow the discord roles "Admin", "Chair", "Secretariat", and "Secretariat General" to bypass all commands while "Delegate" only has perms to vote.
 - [x] Able to manually force the poll to end if one or more Delegates did not vote.
 ###### \* Delegates may revote if granted by the Chair
+
+**This project was also a colaboration between** :
+1. Jaymz (myself)
+2. SottaByte
 > Copyright © 2020 JaymzGit
 
