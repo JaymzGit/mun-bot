@@ -198,8 +198,6 @@ bot.on("message", async message => {
           //Doing so will add 1 to the "abstain" count and total vote count which will be revealed at the end of voting.
           vars.channels[a].abstain++;
           vars.channels[a].votednum++;
-          message.channel.send(vars.channels[a].channelID);
-          message.channel.send(a);
           //As well as to inform everyone, a message will popup in the chat saying that the delegate has voted abstain.
           message.channel.send(`:ballot_box: ${user} has **abstained** from voting. ` + `[` + vars.channels[a].votednum + "/" + vars.channels[a].delegates + `]`);
           a = 0;
