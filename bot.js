@@ -128,7 +128,7 @@ bot.on("message", async message => {
     if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
-    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
+         message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (y in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[y].channelID == message.channel.id) && (vars.channels[y].pollactive == true && vars.channels[y].votednum < vars.channels[y].delegates && !vars.channels[y].voted.includes(message.author.id))) {
@@ -157,7 +157,7 @@ bot.on("message", async message => {
     if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
-    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
+         message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (n in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[n].channelID == message.channel.id) && (vars.channels[n].pollactive == true && vars.channels[n].votednum < vars.channels[n].delegates && !vars.channels[n].voted.includes(message.author.id))) {
@@ -187,7 +187,7 @@ bot.on("message", async message => {
     if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
-    	message.member.roles.cache.some(role => role.name === 'Secretary General')) {
+         message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (a in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
         if ((vars.channels[a].channelID == message.channel.id) && (vars.channels[a].pollactive == true && vars.channels[a].votednum < vars.channels[a].delegates && !vars.channels[a].voted.includes(message.author.id))) {
