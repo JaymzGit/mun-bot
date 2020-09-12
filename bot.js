@@ -217,14 +217,15 @@ bot.on("message", async message => {
     if ((vars.channels[e].channelID == message.channel.id) && vars.channels[e].pollactive == true && vars.channels[e].votednum == vars.channels[e].delegates) {
       vars.channels[e].pollactive = false;
       message.channel.send(":ballot_box: Poll has ended!" + "\n" +
-          "Number of delegates who voted **Yes**: " + vars.channels[e].yes + "\n" +
-          "Number of delegates who voted **No**: " + vars.channels[e].no + "\n" +
-          "Number of delegates who **abstained** from voting: " + vars.channels[e].abstain);
-      vars.channels[e].channelID = 0;
+          "Number of delegates who voted Yes: " + vars.channels[e].yes + "\n" +
+          "Number of delegates who voted No: " + vars.channels[e].no + "\n" +
+          "Number of delegates who abstained from voting: " + vars.channels[e].abstain);
+      vars.channels[e].channelID =0;
       vars.channels[e].yes = 0;
       vars.channels[e].no = 0;
       vars.channels[e].abstain = 0;
       vars.channels[e].delegates = 0;
+      vars.channels[e].votednum = 0;
       vars.channels[e].voted = [];
       break;
     }
