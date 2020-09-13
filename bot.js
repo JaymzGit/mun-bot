@@ -275,6 +275,7 @@ bot.on("message", async message => {
       return;
     }
   }
+  
   /*End poll command*/
   //Ends poll accordingly if the conditions are met.
   if (message.content.toLowerCase().startsWith("-end")) {
@@ -342,7 +343,6 @@ bot.on("message", async message => {
     }
   }
 
-
   if (message.content.toLowerCase().startsWith("-force voters")){
     if (message.member.roles.cache.some(role => role.name === 'Chair') || message.member.roles.cache.some(role => role.name === 'Admin') || 
     	message.member.roles.cache.some(role => role.name === 'Secretariat') || 
@@ -369,8 +369,6 @@ bot.on("message", async message => {
     }
   }
 
-
-
   let prefixes = JSON.parse(fs.readFileSync("./prefixes.json", "utf8"));
   if (!prefixes[message.guild.id]) {
     prefixes[message.guild.id] = {
@@ -384,6 +382,5 @@ bot.on("message", async message => {
   let args = messageArray.slice(1);
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
   if (commandfile) commandfile.run(bot, message, args);
-
 })
 bot.login(process.env.BOT_TOKEN);
