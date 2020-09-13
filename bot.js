@@ -127,7 +127,8 @@ bot.on("message", async message => {
   if (message.content.toLowerCase() == "-yes" || message.content.toLowerCase() == "-vote yes") {
     if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
-        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') ||  
+        message.member.roles.cache.some(role => role.name === 'Chair') ||
         message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (y in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
@@ -156,7 +157,8 @@ bot.on("message", async message => {
   if (message.content.toLowerCase() == "-no" || message.content.toLowerCase() == "-vote no") {
     if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
-        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') ||  
+        message.member.roles.cache.some(role => role.name === 'Chair') ||
         message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (n in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
@@ -186,7 +188,8 @@ bot.on("message", async message => {
   if (message.content.toLowerCase() == "-abstain" || message.content.toLowerCase() == "-vote abstain") {
     if (message.member.roles.cache.some(role => role.name === 'UNHCR Delegates') || message.member.roles.cache.some(role => role.name === 'WMO Delegates') ||
         message.member.roles.cache.some(role => role.name === 'HUNGA Delegates') || message.member.roles.cache.some(role => role.name === 'WTO Delegates') ||
-        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') || 
+        message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'Secretariat') ||  
+        message.member.roles.cache.some(role => role.name === 'Chair') ||
         message.member.roles.cache.some(role => role.name === 'Secretary General')) {
       for (a in vars.channels) {
         //Runs a poll only if there is no poll active and there is an argument after the command.
