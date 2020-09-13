@@ -110,7 +110,7 @@ bot.on("message", async message => {
         //Checks if a poll is currently active before starting a new poll.
         else if ((vars.channels[x].channelID == message.channel.id && vars.channels[x].pollactive == true)) {
           message.delete();
-          message.channel.send(":warning: A poll is currently active! Use `-end` to end the poll now!")
+          message.channel.send(":warning: A poll is currently active! Either create a poll with `-poll` or change the number of voters with `-force voters`!")
           break;
         }
       }
