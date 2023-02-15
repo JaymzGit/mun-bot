@@ -22,5 +22,4 @@ This bot uses Javascript (JS) with the node module Discord.js
 2. SottaByte
 
 Requested by Joshua Lee, as the USG of Conference Management for PMUN 2020.
-> Copyright © 2020 JaymzGit
-
+> Copyright © 2020 - 2023 JaymzGit
